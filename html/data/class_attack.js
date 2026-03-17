@@ -1,5 +1,5 @@
 class Attack {
-    static all_attacks = {}
+    static all_attacks = {};
 
     id;
     name;
@@ -15,8 +15,8 @@ class Attack {
         this.duration = duration;
     }
 
-    static fill_attacks(source) {
-        for (const attack of source) {
+    static fill_attacks(attacks) {
+        for (const attack of attacks) {
             if (
                 typeof attack.move_id === undefined ||
                 typeof attack.name === undefined ||
