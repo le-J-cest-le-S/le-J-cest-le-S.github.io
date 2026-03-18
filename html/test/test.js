@@ -26,24 +26,31 @@ function getAttackByType(typeName){
 }
 
 function sortPokemonByTypeThenName() {
-    Object.values(Pokemon.all_pokemons).sort((a, b) => {
+    const sorted = Object.values(Pokemon.all_pokemons).sort((a, b) => {
+        const typeA1 = a.types[0].name ?? '';
+        const typeA2 = a.types[1]?.name ?? '';
+
+        const typeB1 = b.types[0].name ?? '';
+        const typeB2 = b.types[1]?.name ?? '';
+
         // Tri sur le type principal
-        const type0Cmp = a.types[0].name.localeCompare(b.types[0].name);
-        if (type0Cmp !== 0) return type0Cmp;
+        const type1Cmp = typeA1.localeCompare(typeB1);
+        if (type1Cmp !== 0) return type1Cmp;
 
         // Tri sur le type secondaire s'il existe
-        const aType1 = a.types[1] ?? '';
-        const bType1 = b.types[1] ?? '';
-        const type1Cmp = aType1.localeCompare(bType1);
-        if (type1Cmp !== 0) return type1Cmp;
+        const type2Cmp = typeA2.localeCompare(typeB2);
+        if (type2Cmp !== 0) return type2Cmp;
 
         // Tri sur le nom
         return a.name.localeCompare(b.name);
-    }).forEach(pokemon => {
-        console.log(`- ${pokemon}`);
+    })
+
+    console.log(`Liste des ${Object.values(Pokemon.all_pokemons).length} Pokémons triés par type et nom :`);
+
+    sorted.forEach(pokemon => {
+        console.log(`- ${pokemon.toString()}`);
     })
 }
-sortPokemonByTypeThenName();
 
 // function getWeakestEnemies(attackName){
 //     let attackType = attackName.type;
@@ -52,13 +59,35 @@ sortPokemonByTypeThenName();
 // }
 
 function getBestFastAttacksForEnemy(print, pokemonName){
-    
+    const pokemon = Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.name === pokemonName);
+    if (!pokemon) throw new Error(`${pokemonName} doesn't exists`);
+
+    const type1 = pokemon.types[0].name;
+    const type2 = pokemon.types[1]?.name;
+
+    const attacks = [];
+
+    for (const attack of Object.values(Attack.all_attacks).filter(attack => attack.fast)) {
+        if (type_effectiveness[attack.type][type1] === 1.6) {
+            attacks.push(attack);
+        }
+
+        if (type2) {
+            if (type_effectiveness[attack.type][type2] === 1.6) {
+                attacks.push(attack);
+            }
+        }
+    }
+
+    if (print) {
+        console.log(`Liste des ${attacks.length} attaques efficaces sur ${pokemonName} :`);
+
+        for (const attack of attacks) {
+            console.log(`- ${attack.toString()}`);
+        }
+    }
 }
 
 function fastFight(pokemonNameA, pokemonNameB){
-
+    
 }
-
-// getPokemonsByType("Fire");
-// getPokemonsByAttack("Flame Burst");
-// getAttackByType("Fire");

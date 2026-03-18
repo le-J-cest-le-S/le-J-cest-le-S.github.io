@@ -72,5 +72,3 @@ try {
 } catch (error) {
     console.error(error);
 }
-
-console.log(Pokemon.all_pokemons);
