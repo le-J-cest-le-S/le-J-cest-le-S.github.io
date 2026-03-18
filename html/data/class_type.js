@@ -26,12 +26,3 @@ class Type {
         });
     }
 }
-
-
-Type.fill_types();
-
-console.table(Type.all_types);
-
-Object.values(Type.all_types).forEach(element => {
-    console.table(element.toString());
-});
