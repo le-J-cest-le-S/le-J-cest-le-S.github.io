@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="js/jquery-3.7.1.js"></script>
+
+    <script src="data/charged_moves.js"></script>
+    <script src="data/fast_moves.js"></script>
+    <script src="data/class_attack.js"></script>
+    <script src="js/loadAttacks.js"></script>
+
+    <script src="data/type_effectiveness.js"></script>
+    <script src="data/class_type.js"></script>
+
+    <script src="data/pokemons.js"></script>
+    <script src="data/class_pokemon.js"></script>
+
+    <script>
+        try {
+            Pokemon.fill_pokemons(pokemons, Type.all_types, Attack.all_attack);
+        } catch (error) {
+            console.error(error);
+        }
+    </script>
+</body>
+</html>
