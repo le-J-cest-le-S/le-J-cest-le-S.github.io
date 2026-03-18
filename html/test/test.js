@@ -1,5 +1,5 @@
 function getPokemonsByType(typeName){
-    Object.values(Poklemon.all_pokemons).forEach(element => {
+    Object.values(Pokemon.all_pokemons).forEach(element => {
         if(element.type == typeName){
             console.log(element);
         }
@@ -7,7 +7,7 @@ function getPokemonsByType(typeName){
 }
 
 function getPokemonsByAttack(attackName){
-    Object.values(Poklemon.all_pokemons).forEach(element => {
+    Object.values(Pokemon.all_pokemons).forEach(element => {
         if(element.fast_attacks === attackName || element.charged_attacks === attackName){
             console.log(element);
         }
@@ -37,3 +37,7 @@ function getBestFastAttacksForEnemy(print, pokemonName){
 function fastFight(pokemonNameA, pokemonNameB){
 
 }
+
+getPokemonsByType("Fire");
+getPokemonsByAttack("Fire Blast");
+getAttackByType("Fire");
