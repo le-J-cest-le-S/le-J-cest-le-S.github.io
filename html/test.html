@@ -9,17 +9,19 @@
     <script src="js/jquery-3.7.1.js"></script>
 
     <script src="data/charged_moves.js"></script>
-    <script src="data/pokemon_moves.js"></script>
     <script src="data/fast_moves.js"></script>
-    <script src="data/pokemons.js"></script>
-
     <script src="data/class_attack.js"></script>
+    <script src="js/loadAttacks.js"></script>
 
+    <script src="data/type_effectiveness.js"></script>
+    <script src="data/class_type.js"></script>
+
+    <script src="data/pokemons.js"></script>
     <script src="data/class_pokemon.js"></script>
 
     <script>
         try {
-            Pokemon.fill_pokemons(pokemons);
+            Pokemon.fill_pokemons(pokemons, Type.all_types, Attack.all_attack);
         } catch (error) {
             console.error(error);
         }
