@@ -3,28 +3,23 @@ class Type {
     constructor(name){
         this.name = name;
     }
-    toString(){
-        let tabWeekness = [];
-        let tabVeryWeekness = [];
-        let tabStrongness = [];
-        let tabNormalness = [];
+    toString() {
+        const tabOfType = type_effectiveness[this.name];
 
-        let tabOfType = type_effectiveness[this.name];
-        Object.keys(tabOfType).forEach(element => {
-           if (type_effectiveness[this.name][element] == 1){ 
-                tabNormalness.push(element);
-           }
-            else if (type_effectiveness[this.name][element] > 1){
-                tabStrongness.push(element);
-            }
-            else if (type_effectiveness[this.name][element] > 0.5){
-                tabWeekness.push(element);
-            } else {
-                tabVeryWeekness.push(element);
-            }
-        });
-        return this.name + ": 1.6 = [" + tabStrongness + "] , 1.0 = [" + tabNormalness + "] , 0.625 = [" + tabWeekness + "]" + ", 0.390625 = [" + tabVeryWeekness + "]";
-    }
+        // Grouper les types par leur valeur d'efficacité
+        const grouped = Object.entries(tabOfType).reduce((acc, [type, value]) => {
+            if (!acc[value]) acc[value] = [];
+            acc[value].push(type);
+            return acc;
+        }, {});
+
+        // Trier les valeurs de manière décroissante et construire la chaîne
+        return this.name + ": " + Object.keys(grouped)
+            .map(Number)
+            .sort((a, b) => b - a)
+            .map(value => `${value} = [${grouped[value].join(", ")}]`)
+            .join(" , ");
+        }
     static fill_types(){
         Object.keys(type_effectiveness).forEach(element => {
             Type.all_types[element] = new Type(element);
@@ -33,12 +28,10 @@ class Type {
 }
 
 
-let test = new Type("Bug");
-
 Type.fill_types();
 
-console.log(Type.all_types);
+console.table(Type.all_types);
 
-Type.all_types.forEach(element => {
-    console.log(element.toString());
+Object.values(Type.all_types).forEach(element => {
+    console.table(element.toString());
 });
