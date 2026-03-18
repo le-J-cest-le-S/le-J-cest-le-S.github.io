@@ -24,17 +24,20 @@ class Pokemon {
     static fill_pokemons(pokemons) {
         for (const pokemon of pokemons) {
             if (
-                typeof pokemon.pokemon_id === undefined ||
-                typeof pokemon.pokemon_name === undefined ||
-                typeof pokemon.base_stamina === undefined ||
-                typeof pokemon.base_attack === undefined ||
-                typeof pokemon.base_defense === undefined
+                pokemon.pokemon_id === undefined ||
+                pokemon.pokemon_name === undefined ||
+                pokemon.base_stamina === undefined ||
+                pokemon.base_attack === undefined ||
+                pokemon.base_defense === undefined
             ) throw new Error(`Couldn't resolve Pokémon : [${pokemon.pokemon_id}] ${pokemon.pokemon_name}`);
 
-            const types = pokemon_types.find(typ => typ.pokemon_id == pokemon.pokemon_id).type;
+            const types = pokemon_types.find(typ => typ.pokemon_id == pokemon.pokemon_id).type.map(typeName => Type.all_types[typeName]);
 
-            const fastMoves = pokemon_moves.find(move => move.pokemon_id == pokemon.pokemon_id).fast_moves;
-            const chargedMoves = pokemon_moves.find(move => move.pokemon_id == pokemon.pokemon_id).charged_moves;
+            const moves = pokemon_moves.find(move => move.pokemon_id == pokemon.pokemon_id);
+
+            const fastMoves = moves.fast_moves.map(moveName => Object.values(Attack.all_attacks).find(atk => atk.name === moveName));
+
+            const chargedMoves = moves.charged_moves.map(moveName => Object.values(Attack.all_attacks).find(atk => atk.name === moveName));
 
             if (pokemon.form === 'Normal') {
                 Pokemon.all_pokemons[pokemon.pokemon_id] = new Pokemon(
@@ -51,12 +54,12 @@ class Pokemon {
         }
     }
 
-    get types() {
+    getTypes() {
         return this.types;
     }
 
-    get attacks() {
-        return this.fastMoves + this.chargedMoves;
+    getAttacks() {
+        return [...this.fastMoves, ...this.chargedMoves];
     }
 
     toString() {
@@ -69,3 +72,5 @@ try {
 } catch (error) {
     console.error(error);
 }
+
+console.log(Pokemon.all_pokemons);
