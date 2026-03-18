@@ -26,3 +26,9 @@ class Type {
         });
     }
 }
+
+try {
+    Type.fill_types();
+} catch (error) {
+    console.error(error);
+}

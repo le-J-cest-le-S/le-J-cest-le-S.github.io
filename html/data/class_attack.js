@@ -39,3 +39,10 @@ class Attack {
         return `${this.name} : #${this.id}, ${this.type}, ${this.power}, ${this.duration}ms`;
     }
 }
+
+try {
+    Attack.fill_attacks(charged_moves);
+    Attack.fill_attacks(fast_moves);
+} catch (error) {
+    console.error(error);
+}
