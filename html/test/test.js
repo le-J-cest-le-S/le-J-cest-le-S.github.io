@@ -45,11 +45,11 @@ function sortPokemonByTypeThenName() {
 }
 sortPokemonByTypeThenName();
 
-function getWeakestEnemies(attackName){
-    let attackType = attackName.type;
-    Object.values(Type.all_types).forEach(type => {
-        if 
-}
+// function getWeakestEnemies(attackName){
+//     let attackType = attackName.type;
+//     Object.values(Type.all_types).forEach(type => {
+//         if 
+// }
 
 function getBestFastAttacksForEnemy(print, pokemonName){
     
