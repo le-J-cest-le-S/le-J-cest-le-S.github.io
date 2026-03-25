@@ -86,4 +86,3 @@ function getBestFastAttacksForEnemy(print, pokemonName){
         }
     }
 }
-

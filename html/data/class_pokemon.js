@@ -1,6 +1,6 @@
 class Pokemon {
     static all_pokemons = {};
-
+    
     id;
     name;
     stamina;
@@ -9,7 +9,7 @@ class Pokemon {
     types = [];
     fastMoves = [];
     chargedMoves = [];
-
+    
     constructor(id, name, stamina, baseAttack, baseDefense, types, fastMoves, chargedMoves) {
         this.id = id;
         this.name = name;
@@ -20,7 +20,7 @@ class Pokemon {
         this.fastMoves = fastMoves;
         this.chargedMoves = chargedMoves;
     }
-
+    
     static fill_pokemons(pokemons) {
         for (const pokemon of pokemons) {
             if (
@@ -30,15 +30,15 @@ class Pokemon {
                 pokemon.base_attack === undefined ||
                 pokemon.base_defense === undefined
             ) throw new Error(`Couldn't resolve Pokémon : [${pokemon.pokemon_id}] ${pokemon.pokemon_name}`);
-
+            
             const types = pokemon_types.find(typ => typ.pokemon_id == pokemon.pokemon_id).type.map(typeName => Type.all_types[typeName]);
-
+            
             const moves = pokemon_moves.find(move => move.pokemon_id == pokemon.pokemon_id);
-
+            
             const fastMoves = moves.fast_moves.map(moveName => Object.values(Attack.all_attacks).find(atk => atk.name === moveName));
-
+            
             const chargedMoves = moves.charged_moves.map(moveName => Object.values(Attack.all_attacks).find(atk => atk.name === moveName));
-
+            
             if (pokemon.form === 'Normal') {
                 Pokemon.all_pokemons[pokemon.pokemon_id] = new Pokemon(
                     pokemon.pokemon_id,
@@ -53,15 +53,54 @@ class Pokemon {
             }
         }
     }
-
+    
     getTypes() {
         return this.types;
     }
-
+    
     getAttacks() {
         return [...this.fastMoves, ...this.chargedMoves];
     }
+    
+    getBestFastAttacksForEnemy(print, pokemonName){
+        const pokemon = Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.name === pokemonName);
+        if (!pokemon) throw new Error(`${pokemonName} doesn't exists`);
+        
+        const type1 = pokemon.types[0].name;
+        const type2 = pokemon.types[1]?.name;
+        
+        // Dégats = Puissance x Efficacité x (Base Attack A / Base Defense B)
+        
+        const attacks = {};
+        
+        const insert = (attack) => {
+            attacks[attack.id] = {
+                attack: attack,
+                damages:
+                    attack.power *
+                    (type2 ?
+                        Math.max(type_effectiveness[attack.type][type1], type_effectiveness[attack.type][type2]) :
+                        type_effectiveness[attack.type][type1]) *
+                    (this.baseAttack / pokemon.baseDefense)
+            }
+        }
+        
+        for (const attack of this.fastMoves) {
+            insert(attack);
+            if (type2) insert(attack);
+        }
+        
+        if (print) {
+            console.log(`Liste des ${attacks.length} attaques efficaces sur ${pokemonName} :`);
+            
+            Object.values(attacks).sort((a, b) => b.damages - a.damages).forEach(attack => {
+                console.log(`- ${attack.attack.toString()} | Dégâts : ${attack.damages}`);
+            })
+        }
 
+        console.log(`La meilleure attaque de ${this.name} sur ${pokemonName} est ${Object.values(attacks)[0].attack.name}`);
+    }
+    
     toString() {
         return `${this.name} : #${this.id}, [${this.types.join(', ')}], [STA: ${this.stamina}, ATK: ${this.baseAttack}, DEF: ${this.baseDefense}], Rapides = [${this.fastMoves.map(atk => atk.name).join(', ')}], Chargées = [${this.chargedMoves.map(atk => atk.name).join(', ')}]`;
     }
