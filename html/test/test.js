@@ -70,35 +70,8 @@ function getWeakestEnemies(attackName){
     
 }
 
-function getBestFastAttacksForEnemy(print, pokemonName){
-    const pokemon = Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.name === pokemonName);
-    if (!pokemon) throw new Error(`${pokemonName} doesn't exists`);
-
-    const type1 = pokemon.types[0].name;
-    const type2 = pokemon.types[1]?.name;
-
-    const attacks = [];
-
-    for (const attack of Object.values(Attack.all_attacks).filter(attack => attack.fast)) {
-        if (type_effectiveness[attack.type][type1] === 1.6) {
-            attacks.push(attack);
-        }
-
-        if (type2) {
-            if (type_effectiveness[attack.type][type2] === 1.6) {
-                attacks.push(attack);
-            }
-        }
-    }
-
-    if (print) {
-        console.log(`Liste des ${attacks.length} attaques efficaces sur ${pokemonName} :`);
-
-        for (const attack of attacks) {
-            console.log(`- ${attack.toString()}`);
-        }
-    }
-}
+const pok = Pokemon.all_pokemons[6];
+pok.getBestFastAttacksForEnemy(true, 'Charmander');
 
 function fastFight(pokemonNameA, pokemonNameB){
     
