@@ -106,6 +106,7 @@ class Pokemon {
     }
 
     static getWeakestEnemies(attackName){
+        console.log(`Liste des pokémons faibles contre l'attaque ${attackName} :`);
         // Trouver l'attaque
         Object.values(Attack.all_attacks).forEach(attack => {
             // Si l'attaque correspond à celle recherchée
@@ -150,3 +151,4 @@ try {
 } catch (error) {
     console.error(error);
 }
+

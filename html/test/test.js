@@ -1,9 +1,10 @@
 function getPokemonsByType(typeName){
+    console.log("Liste des " + Object.values(Pokemon.all_pokemons).filter(p => p.types.some(t => t.name === typeName)).length + " Pokemons de type " + typeName + " :");
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
         if(pokemon.types){
             for (const type of pokemon.types) {
                 if (type.name === typeName) {
-                    console.log(pokemon.toString());
+                    console.log("- " + pokemon.toString());
                 }
             }
         }
@@ -11,11 +12,12 @@ function getPokemonsByType(typeName){
 }
 
 function getPokemonsByAttack(attackName){
+    console.log("Liste des " + Object.values(Pokemon.all_pokemons).filter(p => [...p.fastMoves, ...p.chargedMoves].some(a => a.name === attackName)).length + " Pokemons ayant l'attaque " + attackName + " :");
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
         if (pokemon.fastMoves || pokemon.chargedMoves){
             for (const attack of [...pokemon.fastMoves, ...pokemon.chargedMoves]) {
                 if (attack.name === attackName) {
-                    console.log(pokemon.toString());
+                    console.log("- " + pokemon.toString());
                 }        
             }
         }
@@ -23,9 +25,10 @@ function getPokemonsByAttack(attackName){
 }
 
 function getAttackByType(typeName){
+    console.log("Liste des " + Object.values(Attack.all_attacks).filter(a => a.type === typeName).length + " attaques de type " + typeName + " :");
     Object.values(Attack.all_attacks).forEach(attack => {
         if(attack.type == typeName){
-            console.log(attack.toString());
+            console.log("- " + attack.toString());
         }
     });
 }
@@ -86,3 +89,4 @@ function getBestFastAttacksForEnemy(print, pokemonName){
         }
     }
 }
+
