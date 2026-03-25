@@ -57,19 +57,6 @@ function sortPokemonByTypeThenName() {
     })
 }
 
-function getWeakestEnemies(attackName){
-    Object.values(Attack.all_attacks).forEach(attack => {
-        if(attack.name === attackName){
-            Object.values(Type.all_types).forEach(type => {
-                if (type.name === attack.type){
-                    console.log(type.toString().split(" = ")[1].split(" , ")[0]);
-                }
-            });
-        }
-    });
-    
-}
-
 function getBestFastAttacksForEnemy(print, pokemonName){
     const pokemon = Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.name === pokemonName);
     if (!pokemon) throw new Error(`${pokemonName} doesn't exists`);
@@ -100,6 +87,3 @@ function getBestFastAttacksForEnemy(print, pokemonName){
     }
 }
 
-function fastFight(pokemonNameA, pokemonNameB){
-    
-}
