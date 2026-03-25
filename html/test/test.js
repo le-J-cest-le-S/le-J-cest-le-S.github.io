@@ -1,26 +1,31 @@
-console.table(Attack.all_attacks);
-console.table(Type.all_types);
-
 function getPokemonsByType(typeName){
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
-        if(pokemon.types && pokemon.types.includes(typeName)){
-            console.log(pokemon.toString());
+        if(pokemon.types){
+            for (const type of pokemon.types) {
+                if (type.name === typeName) {
+                    console.log(pokemon.toString());
+                }
+            }
         }
     });
 }
 
 function getPokemonsByAttack(attackName){
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
-        if(pokemon.fastMoves && pokemon.fastMoves.includes(attackName) || pokemon.chargedMoves && pokemon.chargedMoves.includes(attackName)){
-            console.log(pokemon.toString());
+        if (pokemon.fastMoves || pokemon.chargedMoves){
+            for (const attack of [...pokemon.fastMoves, ...pokemon.chargedMoves]) {
+                if (attack.name === attackName) {
+                    console.log(pokemon.toString());
+                }        
+            }
         }
     });
 }
 
 function getAttackByType(typeName){
-    Object.values(Attack.all_attacks).forEach(pokemon => {
-        if(pokemon.type == typeName){
-            console.log(pokemon.toString());
+    Object.values(Attack.all_attacks).forEach(attack => {
+        if(attack.type == typeName){
+            console.log(attack.toString());
         }
     });
 }
@@ -43,22 +48,29 @@ function sortPokemonByTypeThenName() {
         console.log(`- ${pokemon}`);
     })
 }
-sortPokemonByTypeThenName();
 
-// function getWeakestEnemies(attackName){
-//     let attackType = attackName.type;
-//     Object.values(Type.all_types).forEach(type => {
-//         if 
-// }
-
-function getBestFastAttacksForEnemy(print, pokemonName){
+function getWeakestEnemies(attackName){
+    Object.values(Attack.all_attacks).forEach(attack => {
+        if(attack.name === attackName){
+            Object.values(Type.all_types).forEach(type => {
+                if (type.name === attack.type){
+                    console.log(type.toString().split(" = ")[1].split(" , ")[0]);
+                }
+            });
+        }
+    });
     
 }
 
-function fastFight(pokemonNameA, pokemonNameB){
+// function getBestFastAttacksForEnemy(print, pokemonName){
+    
+// }
 
-}
+// function fastFight(pokemonNameA, pokemonNameB){
 
-// getPokemonsByType("Fire");
-// getPokemonsByAttack("Flame Burst");
-// getAttackByType("Fire");
+// }
+
+getPokemonsByType("Fire");
+getPokemonsByAttack("Flamethrower");
+getAttackByType("Fire");
+getWeakestEnemies("Flamethrower");
