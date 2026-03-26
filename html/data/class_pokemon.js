@@ -105,10 +105,51 @@ class Pokemon {
     toString() {
         return `${this.name} : #${this.id}, [${this.types.join(', ')}], [STA: ${this.stamina}, ATK: ${this.baseAttack}, DEF: ${this.baseDefense}], Rapides = [${this.fastMoves.map(atk => atk.name).join(', ')}], Chargées = [${this.chargedMoves.map(atk => atk.name).join(', ')}]`;
     }
+
+    static getWeakestEnemies(attackName){
+        console.log(`Liste des pokémons faibles contre l'attaque ${attackName} :`);
+        // Trouver l'attaque
+        Object.values(Attack.all_attacks).forEach(attack => {
+            // Si l'attaque correspond à celle recherchée
+            if(attack.name === attackName){
+                // Trouver le type de l'attaque
+                Object.values(Type.all_types).forEach(type => {
+                    // Si le type correspond à celui de l'attaque
+                    if (type.name === attack.type){
+                        // Récupérer les types faibles contre ce type
+                        let types = type.toString().split(" = ")[1].split(" , ")[0].replace("[", "").replace("]", "").split(", ");;
+                        types.forEach(type => {
+                            // Récupérer les pokémons de ces types
+                            Object.values(Pokemon.all_pokemons).forEach(pokemon => {
+                                if(pokemon.types){
+                                    // Si le pokémon a plusieurs types, vérifier que tous les types sont faibles contre l'attaque
+                                    if (pokemon.types.length > 1) {
+                                        const pokemonTypeNames = pokemon.types.map(pokemonType => pokemonType.name);
+                                        if (pokemonTypeNames.every(pokemonTypeName => types.includes(pokemonTypeName))) {
+                                            console.log(pokemon.toString());
+                                        }
+                                    } else {
+                                        // Si le pokémon n'a qu'un type, vérifier que ce type est faible contre l'attaque
+                                        for (const pokemonType of pokemon.types) {
+                                            if (pokemonType.name === type) {
+                                                console.log(pokemon.toString());
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    }
 }
+
 
 try {
     Pokemon.fill_pokemons(pokemons, Type.all_types, Attack.all_attack);
 } catch (error) {
     console.error(error);
 }
+
