@@ -61,6 +61,10 @@ class Pokemon {
     getAttacks() {
         return [...this.fastMoves, ...this.chargedMoves];
     }
+
+    static getById(id) {
+        return Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.id == id);
+    }
     
     getBestFastAttacksForEnemy(print, pokemonName){
         const pokemon = Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.name === pokemonName);
