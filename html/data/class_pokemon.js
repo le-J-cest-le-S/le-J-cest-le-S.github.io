@@ -61,6 +61,10 @@ class Pokemon {
     getAttacks() {
         return [...this.fastMoves, ...this.chargedMoves];
     }
+
+    static getById(id) {
+        return Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.id == id);
+    }
     
     getBestFastAttacksForEnemy(print, pokemonName){
         const pokemon = Object.values(Pokemon.all_pokemons).find(pokemon => pokemon.name === pokemonName);
@@ -81,7 +85,8 @@ class Pokemon {
                     (type2 ?
                         Math.max(type_effectiveness[attack.type][type1], type_effectiveness[attack.type][type2]) :
                         type_effectiveness[attack.type][type1]) *
-                    (this.baseAttack / pokemon.baseDefense)
+                    (this.baseAttack / pokemon.baseDefense),
+                effectiveness: type2 ? Math.max(type_effectiveness[attack.type][type1], type_effectiveness[attack.type][type2]) : type_effectiveness[attack.type][type1]
             }
         }
         
@@ -91,14 +96,14 @@ class Pokemon {
         }
         
         if (print) {
-            console.log(`Liste des ${attacks.length} attaques efficaces sur ${pokemonName} :`);
+            console.log(`Liste des ${Object.values(attacks).length} attaques efficaces sur ${pokemonName} :`);
             
             Object.values(attacks).sort((a, b) => b.damages - a.damages).forEach(attack => {
                 console.log(`- ${attack.attack.toString()} | Dégâts : ${attack.damages}`);
             })
         }
 
-        console.log(`La meilleure attaque de ${this.name} sur ${pokemonName} est ${Object.values(attacks)[0].attack.name}`);
+        return Object.values(attacks)[0];
     }
     
     toString() {
