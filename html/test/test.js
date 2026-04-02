@@ -89,8 +89,6 @@ function getBestFastAttacksForEnemy(print, pokemonName){
         }
     }
 }
-<<<<<<< HEAD
-=======
 
 const pok = Pokemon.all_pokemons[6];
 pok.getBestFastAttacksForEnemy(true, 'Charmander');
@@ -144,4 +142,3 @@ function fastFight(pokemonNameA, pokemonNameB){
 }
 
 fastFight('Charmander', 'Bulbasaur');
->>>>>>> b1ccce409b6564f9ee2dd5b2ad261ef3464bcfdc

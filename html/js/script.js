@@ -7,7 +7,6 @@ allPokemons.forEach(pokemon => {
     pokemon.id = pokemon.id.toString().padStart(3, '0');
 });
 
-<<<<<<< HEAD
 const btnPrec = $('#btn-prec');
 const btnSuiv = $('#btn-suiv');
 
@@ -131,7 +130,6 @@ typeFilter.on('change', () => {
         tBody.append(tr);
     });
 });
-=======
 allPokemons.forEach(pokemon => {
     const tr = $(`<tr id="${pokemon.id}"></tr>`);
     tr.append(`<td>${pokemon.id}</td>`);
@@ -273,4 +271,3 @@ $('tr').on('click', source => {
         })
     })
 })
->>>>>>> b1ccce409b6564f9ee2dd5b2ad261ef3464bcfdc
