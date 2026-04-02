@@ -71,9 +71,45 @@
         display: block;
         border-radius: 4px;
     }
+
+    #btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0px;
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    #search {
+        margin-bottom: 20px;
+        padding: 10px;
+        width: 100%;
+        max-width: 400px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
 </style>
 
 <body>
+
+    <input id="search" type="search" placeholder="Rechercher un pokémon...">
+
+    <select id="type-filter">
+        <option value="">Tous les types</option>
+        <!-- Les options de type seront ajoutées ici par JavaScript -->
+    </select>
 
     <table>
         <thead>
@@ -90,6 +126,11 @@
         </thead>
         <tbody>
             <!-- Les données des pokémons seront insérées ici par JavaScript -->
+             <div id="btn">
+                <button id="btn-prec">PREC</button>
+                <p id="page-info"></p>
+                <button id="btn-suiv">SUIV</button>
+             </div>
         </tbody>
     </table>
     
