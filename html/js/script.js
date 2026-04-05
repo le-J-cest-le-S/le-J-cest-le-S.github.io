@@ -25,7 +25,16 @@ allTypes.forEach(type => {
 
 const fastAttackFilter = $('#fast-attack-filter');
 // Récupérer tous les types d'attaque rapide uniques
-const allFastAttacks = [...new Set(allPokemons.flatMap(pokemon => pokemon.fastMoves.map(move => move.name)))].sort();
+const allFastAttacksTemp = [];
+
+for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+    for (const move of pokemon.fastMoves) {
+        allFastAttacksTemp.push(move.name);
+    }
+}
+
+const allFastAttacks = [...new Set(allFastAttacksTemp)].sort();
+
 // Ajouter les options d'attaque rapide au select
 allFastAttacks.forEach(move => {
     fastAttackFilter.append(`<option value="${move}">${move}</option>`);
