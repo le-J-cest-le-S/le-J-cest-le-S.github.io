@@ -11,6 +11,7 @@ allPokemons.forEach(pokemon => {
 const btnPrec = $('#btn-prec');
 const btnSuiv = $('#btn-suiv');
 
+
 let searchQuery = '';
 let selectedType = '';
 let selectedFastAttack = '';
@@ -24,7 +25,7 @@ allTypes.forEach(type => {
 });
 
 const fastAttackFilter = $('#fast-attack-filter');
-// Récupérer tous les types d'attaque rapide uniques
+// Récupérer tous les types d'attaque rapide 
 const allFastAttacksTemp = [];
 
 for (const pokemon of Object.values(Pokemon.all_pokemons)) {
@@ -57,10 +58,18 @@ function showPage(page = 0, pokemons = allPokemons) {
     // Afficher les pokémons de la page courante
     pokemons.slice(start, end).forEach(pokemon => {
         const tr = $('<tr></tr>');
-        tr.append(`<td>${pokemon.id}</td>`);
+        tr.attr('id', pokemon.id);
+        tr.append(`<td>${pokemon.id} </td>`);
         tr.append(`<td>${pokemon.name}</td>`);
         tr.append(`<td>${pokemon.generation}</td>`);
-        tr.append(`<td>${pokemon.types.map(t => t.name).join(', ')}</td>`);
+        const types = pokemon.types.map(type => `
+                <figure style="border-color: ${type.color}; color: ${type.color}; background-color: ${type.color.replace('rgb', 'rgba').replace(')', ', 0.2)')}">
+                    <img src="images/types/${type.name}.svg" alt="${type.name}">
+                    <figcaption>${type.name}</figcaption>
+                </figure>
+        `).join('');
+        tr.append(`<td><div class="table-types">${types}</div></td>`);
+        
         tr.append(`<td>${pokemon.stamina}</td>`);
         tr.append(`<td>${pokemon.baseAttack}</td>`);
         tr.append(`<td>${pokemon.baseDefense}</td>`);
@@ -110,20 +119,23 @@ function updatePageInfo(pokemons = currentPokemons) {
         btnSuiv.css('pointer-events', 'none');
     }
 }
-showPage(currentPage, currentPokemons);
-updatePageInfo(currentPokemons);
 
 const searchInput = $('#search');
 
 function applyFilters() {
+    // Réinitialiser la page courante à 0 à chaque fois que les filtres sont appliqués
     currentPage = 0; 
     localStorage.setItem('currentPage', 0);
 
+    // Filtrer les pokémons en fonction des critères de recherche
     currentPokemons = allPokemons.filter(pokemon => {
+        // Vérifier si le nom du pokémon correspond à la requête de recherche
         const matchesSearch = pokemon.name.toLowerCase().includes(searchQuery);
+        // Vérifier si le pokémon correspond au type sélectionné
         const matchesType = selectedType
             ? pokemon.types.some(t => t.name === selectedType)
             : true;
+        // Vérifier si le pokémon correspond à l'attaque rapide sélectionnée
         const matchesFastAttack = selectedFastAttack ? pokemon.fastMoves.some(move => move.name === selectedFastAttack)
             : true;
         return matchesSearch && matchesType && matchesFastAttack;
@@ -133,23 +145,26 @@ function applyFilters() {
     updatePageInfo(currentPokemons);
 }
 
+// Filtrer par nom
 searchInput.on('input', () => {
     searchQuery = searchInput.val().toLowerCase();
     applyFilters();
 });
 
+// Filtrer par type
 typeFilter.on('change', () => { 
     selectedType = typeFilter.val();
     applyFilters();
 });
 
+// Filtrer par attaque rapide
 fastAttackFilter.on('change', () => {
     selectedFastAttack = fastAttackFilter.val();
     applyFilters();
 });
 
 // POPUP
-$('tr').on('click', source => {
+tBody.on('click', 'tr', source => {
     // Reinitaliser
     $('dialog').remove();
 
@@ -276,3 +291,6 @@ $('tr').on('click', source => {
         })
     })
 });
+
+showPage(currentPage, currentPokemons);
+updatePageInfo(currentPokemons);

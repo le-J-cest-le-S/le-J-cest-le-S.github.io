@@ -42,6 +42,7 @@ class Type {
             .map(value => `${value} = [${grouped[value].join(", ")}]`)
             .join(" , ");
         }
+        
     static fill_types(){
         Object.keys(type_effectiveness).forEach(element => {
             Type.all_types[element] = new Type(element);
