@@ -17,21 +17,18 @@ body {
     background-image: url('images/background.jpg');
 }
 
-table {
+table:not(dialog table) {
     width: 100%;
     border-collapse: collapse;
-    background-color: #05ad74;
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-    background-size: 39.5px 39.5px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
 }
 
 thead {
     background-color: white;
 }
 
-th {
+th:not(dialog th) {
     padding: 10px 14px;
     text-align: center;
     font-size: 11px;
@@ -42,13 +39,23 @@ th {
     border-bottom: 1px solid rgba(0,0,0,0.07);
     white-space: nowrap;
 }
+th:first-child {
+    border-top-left-radius: 16px;
+}
+th:last-child {
+    border-top-right-radius: 16px;
+}
 
-td {
+td:not(dialog td) {
     padding: 10px 14px;
-    font-size: 14px;
+    font-size: 25px;
     border-bottom: 1px solid rgba(0,0,0,0.06);
     vertical-align: middle;
     text-align: center;
+}
+td:last-child:not(dialog td) {
+    display: flex;
+    justify-content: center;
 }
 
 tr:last-child td {
@@ -56,10 +63,8 @@ tr:last-child td {
 }
 
 tbody tr:hover {
-    background-color: #0fca8c;
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-color: rgba(255, 255, 255, 0.75);
+    color: #000000;
     background-size: 40px 40px;
     cursor: pointer;
 }

@@ -61,7 +61,6 @@ function showPage(page = 0, pokemons = allPokemons) {
         tr.attr('id', pokemon.id);
         tr.append(`<td>${pokemon.id} </td>`);
         tr.append(`<td>${pokemon.name}</td>`);
-        tr.append(`<td>${pokemon.generation}</td>`);
         const types = pokemon.types.map(type => `
                 <figure style="border-color: ${type.color}; color: ${type.color}; background-color: ${type.color.replace('rgb', 'rgba').replace(')', ', 0.2)')}">
                     <img src="images/types/${type.name}.svg" alt="${type.name}">
@@ -73,10 +72,34 @@ function showPage(page = 0, pokemons = allPokemons) {
         tr.append(`<td>${pokemon.stamina}</td>`);
         tr.append(`<td>${pokemon.baseAttack}</td>`);
         tr.append(`<td>${pokemon.baseDefense}</td>`);
-        tr.append(`<td><img src="./webp/images/${pokemon.id}.webp" alt="${pokemon.name}" width="100"></td>`);
+        tr.append(`<td><img class='sprite' src="./webp/sprites/${pokemon.id}MS.webp" alt="${pokemon.name}" width="100" id="${pokemon.id}"></td>`);
         tBody.append(tr);
     });
 }
+
+tBody.on('mouseenter', 'img.sprite', function() {
+    const rect = this.getBoundingClientRect();
+
+    $('<img>', {
+        src: `webp/thumbnails/${this.id}.webp`,
+        id: 'preview'
+    }).css({
+        position: 'absolute',
+        pointerEvents: 'none',
+        top: `${rect.top + window.scrollY - 0}px`,
+        left: `${rect.left + window.scrollX}px`
+    }).on('load', function() {
+        $(this).css('top', `${rect.top + window.scrollY}`);
+    }).appendTo('body');
+
+    $(this).css('visibility', 'hidden');
+})
+
+tBody.on('mouseleave', 'img.sprite', function() {
+    $('#preview').remove();
+
+    $(this).css('visibility', 'visible');
+})
 
 // Gérer les clics sur les boutons de pagination
 btnPrec.click(() => {
@@ -183,6 +206,7 @@ tBody.on('click', 'tr', source => {
         backgroundImage: `url('images/popup-bg.jpg'), linear-gradient(135deg, ${pokemon.types[0].color}, ${pokemon.types[1] ? pokemon.types[1].color : pokemon.types[0].color})`
     });
 
+    // Génération des types
     const types = $('<ul>');
     pokemon.types.forEach(type => {
         types.append(
@@ -197,6 +221,7 @@ tBody.on('click', 'tr', source => {
         );
     })
 
+    // Génération des attaques rapides
     const fm = $('<ul>');
     pokemon.fastMoves.forEach(move => {
         fm.append(
@@ -219,6 +244,7 @@ tBody.on('click', 'tr', source => {
         )
     })
 
+    // Génération des attaques chargées
     const cm = $('<ul>');
     pokemon.chargedMoves.forEach(move => {
         cm.append(
@@ -241,6 +267,7 @@ tBody.on('click', 'tr', source => {
         )
     })
 
+    // Génération du tableau
     const table = $('<table>').append(
         $('<thead>').append(
             $('<tr>').append(
@@ -252,7 +279,7 @@ tBody.on('click', 'tr', source => {
             $('<tr>').append(
                 $('<td rowspan=6>').append(
                     $('<img>').attr({
-                        src: `webp/thumbnails/${pokemon.id}.webp`,
+                        src: `webp/images/${pokemon.id}.webp`,
                         title: 'Ouvrir en grand'
                     })
                 ),
