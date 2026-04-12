@@ -13,14 +13,14 @@ function getPokemonsByType(typeName){
 }
 
 function getPokemonsByAttack(attackName){
-    const attackName = attackName.toLowerCase();
+    const attackNameToLower = attackName.toLowerCase();
     console.log("Liste des " + Object.values(Pokemon.all_pokemons)
     .filter(p => [...p.fastMoves, ...p.chargedMoves]
-    .some(a => a.name === attackName)).length + " Pokemons ayant l'attaque " + attackName + " :");
+    .some(a => a.name === attackNameToLower)).length + " Pokemons ayant l'attaque " + attackNameToLower + " :");
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
         if (pokemon.fastMoves || pokemon.chargedMoves){
             for (const attack of [...pokemon.fastMoves, ...pokemon.chargedMoves]) {
-                if (attack.name === attackName) {
+                if (attack.name === attackNameToLower) {
                     console.log("- " + pokemon.toString());
                 }        
             }
@@ -29,11 +29,11 @@ function getPokemonsByAttack(attackName){
 }
 
 function getAttacksByType(typeName){
-    const typeName = typeName.toLowerCase();
+    const typeNameToLower = typeName.toLowerCase();
     console.log("Liste des " + Object.values(Attack.all_attacks)
-    .filter(a => a.type === typeName).length + " attaques de type " + typeName + " :");
+    .filter(a => a.type === typeNameToLower).length + " attaques de type " + typeNameToLower + " :");
     Object.values(Attack.all_attacks).forEach(attack => {
-        if(attack.type == typeName){
+        if(attack.type == typeNameToLower){
             console.log("- " + attack.toString());
         }
     });
