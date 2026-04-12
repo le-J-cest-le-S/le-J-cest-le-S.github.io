@@ -24,6 +24,10 @@ table:not(dialog table) {
     border-radius: 16px;
 }
 
+.wrapper {
+    overflow-x: auto;
+}
+
 thead {
     background-color: white;
 }
@@ -100,9 +104,6 @@ dialog {
     padding: 1em;
     background-origin: border-box;
     background-clip: padding-box, border-box;
-    background-image:
-        url('images/popup-bg.jpg'),
-        linear-gradient(135deg, red, blue);
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -115,104 +116,116 @@ dialog::backdrop {
     backdrop-filter: blur(1px);
 }
 
-dialog table {
-    background: none;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-dialog table * {
-    background: none;
-}
-dialog table *:hover {
-    background: none;
-    cursor: default;
-}
-
-dialog thead th {
-    font-size: 20pt;
-    color: #ffffff;
-    text-align: center;
-    padding: 0;
-    padding-bottom: 1em;
-}
-
-dialog td {
-    font-family: 'Pixelify Sans';
-    font-size: 12pt;
-    color: #ffffff;
-    font-weight: normal;
-    padding: 0;
-}
-
-dialog th {
-    padding: 0;
-}
-
 dialog ul {
-    gap: 0.5em;
     display: flex;
-    list-style: none;
     align-items: center;
-}
-dialog ul li {
-    white-space: nowrap;
+    gap: 0.5em;
 }
 
-dialog table img {
-    height: 14em;
-    justify-self: center;
+dialog li {
+    margin: 0; padding: 0;
+    display: flex;
+}
+dialog > ul > li:last-child > ul {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10pt;
 }
 
 dialog figure {
-    border: none;
     display: flex;
+    flex-direction: column;
+    gap: 15pt;
     align-items: center;
-    border: solid 2px;
+    justify-content: space-between;
+}
+dialog figcaption:not(ul.types figcaption) {
+    font-size: 20pt;
+    font-weight: bold;
+    color: white;
+}
+dialog img {
+    height: 250pt;
+}
+
+dialog th, td {
+    font-size: 20pt;
+    color: white;
+    padding: 0 1em 0.25em 1em;
+}
+
+dialog ul.types {
+    display: flex;
+    flex-direction: row;
+    gap: 10pt;
+}
+dialog ul.types figure {
+    border: 3px solid;
     border-radius: 16px;
-    padding: 0.05em;
+    display: flex;
+    flex-direction: row;
+    padding-right: 10pt;
     gap: 5pt;
 }
-dialog figure img {
-    height: 25pt;
+dialog ul.types figure img {
+    height: 35pt;
 }
-dialog figure figcaption {
+dialog ul.types figure figcaption {
     font-size: 15pt;
+    font-weight: bold;
 }
 
-dialog table img:hover {
-    cursor: pointer;
+dialog table.stats td {
+    text-align: center;
 }
 
-dialog div {
-    padding: 0.5em;
-    border: solid 2px;
+dialog li.move figure {
+    border: 3px solid;
     border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    padding-right: 10pt;
+    gap: 5pt;
+}
+dialog li.move figure img {
+    height: 35pt;
+}
+dialog li.move table {
+    min-width: 100px;
+}
+dialog li.move th, td {
+    text-align: left;
     font-size: 15pt;
+    padding: 0;
+    white-space: nowrap;
 }
 
-dialog tbody th {
-    color: #ffffff;
-    font-size: 15pt;
-}
-
-dialog ul {
+ul.horizontal {
     max-width: 300px;
-    overflow-x: auto
+    overflow-x: auto;
 }
 
-dialog .move {
-    padding: 0.1em;
+/* RESPONSIVE */
+@media screen and (orientation: portrait) {
+    dialog {
+        overflow-y: auto;
+        max-height: 90vh;
+    }
+    dialog > ul {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    dialog > ul > li:last-child > ul {
+        align-items: center;
+    }
+    ::-webkit-scrollbar {
+        width: auto;
+    }
 }
 
-dialog .move figure table td {
-    padding-right: 0.8em;
-}
-
-dialog .move figure table td:last-child {
-    padding-right: 0;
-}
-
+/* BUTTONS */
 #btn {
         display: flex;
         justify-content: center;

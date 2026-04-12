@@ -177,18 +177,20 @@ tBody.on('mouseenter', 'img.sprite', function() {
         position: 'absolute',
         pointerEvents: 'none',
         top: `${rect.top + window.scrollY - 0}px`,
-        left: `${rect.left + window.scrollX}px`
+        left: `${rect.left + window.scrollX}px`,
+        width: '3em',
+        height: '2em'
     }).on('load', function() {
         $(this).css('top', `${rect.top + window.scrollY}`);
     }).appendTo('body');
 
-    $(this).css('visibility', 'hidden');
+    $(this).css('opacity', '0');
 })
 
 tBody.on('mouseleave', 'img.sprite', function() {
     $('#preview').remove();
 
-    $(this).css('visibility', 'visible');
+    $(this).css('opacity', '1');
 })
 
 // Gérer les clics sur les boutons de pagination
@@ -309,7 +311,7 @@ tBody.on('click', 'tr', source => {
     });
 
     // Génération des types
-    const types = $('<ul>');
+    const types = $('<ul class="types">');
     pokemon.types.forEach(type => {
         types.append(
             $('<li>').append(
@@ -324,10 +326,10 @@ tBody.on('click', 'tr', source => {
     })
 
     // Génération des attaques rapides
-    const fm = $('<ul>');
+    const fm = $('<ul>').addClass('horizontal');
     pokemon.fastMoves.forEach(move => {
         fm.append(
-            $('<li>').addClass('move').append(
+            $('<li>').addClass('move fast').append(
                 $('<figure>').append(
                     $('<img>').attr({
                         src: `images/types/${move.type}.svg`
@@ -347,10 +349,10 @@ tBody.on('click', 'tr', source => {
     })
 
     // Génération des attaques chargées
-    const cm = $('<ul>');
+    const cm = $('<ul>').addClass('horizontal');
     pokemon.chargedMoves.forEach(move => {
         cm.append(
-            $('<li>').addClass('move').append(
+            $('<li>').addClass('move charged').append(
                 $('<figure>').append(
                     $('<img>').attr({
                         src: `images/types/${move.type}.svg`
@@ -369,44 +371,57 @@ tBody.on('click', 'tr', source => {
         )
     })
 
-    // Génération du tableau
-    const table = $('<table>').append(
-        $('<thead>').append(
-            $('<tr>').append(
-                $('<th>', { text: `#${pokemon.id} - ${pokemon.name}` }),
-                $('<th colspan=3>').append(types)
+    // Génération du contenu
+    const content = $('<ul>').append(
+        $('<li>').append(
+            $('<figure>').append(
+                $('<figcaption>').text(`#${pokemon.id} - ${pokemon.name}`),
+                $('<img>').attr({ src: `webp/images/${pokemon.id}.webp`, title: 'Ouvrir en grand' })
             )
         ),
-        $('<tbody>').append(
-            $('<tr>').append(
-                $('<td rowspan=6>').append(
-                    $('<img>').attr({
-                        src: `webp/images/${pokemon.id}.webp`,
-                        title: 'Ouvrir en grand'
-                    })
+        $('<li>').append(
+            $('<ul>').append(
+                $('<li>').append(types),
+                $('<li>').append(
+                    $('<table>').addClass('stats').append(
+                        $('<tr>').append(
+                            $('<th>').text('STA'),
+                            $('<th>').text('ATK'),
+                            $('<th>').text('DEF')
+                        ),
+                        $('<tr>').append(
+                            $('<td>').text(pokemon.stamina),
+                            $('<td>').text(pokemon.baseAttack),
+                            $('<td>').text(pokemon.baseDefense)
+                        )
+                    )
                 ),
-                $('<th>').text('STA'), $('<th>').text('ATK'), $('<th>').text('DEF')
-            ),
-            $('<tr>').append(
-                $('<td>').text(pokemon.stamina).css('padding-bottom', '1em'), $('<td>').text(pokemon.baseAttack).css('padding-bottom', '1em'), $('<td>').text(pokemon.baseDefense).css('padding-bottom', '1em')
-            ),
-            $('<tr>').append(
-                $('<th colspan=3>').text('Fast Moves')
-            ),
-            $('<tr>').append(
-                $('<td colspan=3>').append(fm)
-            ),
-            $('<tr>').append(
-                $('<th colspan=3>').text('Charged Moves')
-            ),
-            $('<tr>').append(
-                $('<td colspan=3>').append(cm)
+                $('<li>').append(
+                    $('<table>').append(
+                        $('<tr>').append(
+                            $('<th>').text('Fast Moves')
+                        ),
+                        $('<tr>').append(
+                            $('<td>').append(fm)
+                        )
+                    )
+                ),
+                $('<li>').append(
+                    $('<table>').append(
+                        $('<tr>').append(
+                            $('<th>').text('Charged Moves')
+                        ),
+                        $('<tr>').append(
+                            $('<td>').append(cm)
+                        )
+                    )
+                )
             )
         )
-    );
+    )
 
     // Affichage du popup
-    modal.append([table]);
+    modal.append(content);
 
     $('body').append([modal]);
 
