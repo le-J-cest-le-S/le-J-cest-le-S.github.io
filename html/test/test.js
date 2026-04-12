@@ -1,5 +1,6 @@
 function getPokemonsByType(typeName){
-    console.log("Liste des " + Object.values(Pokemon.all_pokemons).filter(p => p.types.some(t => t.name === typeName)).length + " Pokemons de type " + typeName + " :");
+    console.log("Liste des " + Object.values(Pokemon.all_pokemons)
+    .filter(p => p.types.some(t => t.name === typeName)).length + " Pokemons de type " + typeName + " :");
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
         if(pokemon.types){
             for (const type of pokemon.types) {
@@ -12,11 +13,14 @@ function getPokemonsByType(typeName){
 }
 
 function getPokemonsByAttack(attackName){
-    console.log("Liste des " + Object.values(Pokemon.all_pokemons).filter(p => [...p.fastMoves, ...p.chargedMoves].some(a => a.name === attackName)).length + " Pokemons ayant l'attaque " + attackName + " :");
+    const attackNameToLower = attackName.toLowerCase();
+    console.log("Liste des " + Object.values(Pokemon.all_pokemons)
+    .filter(p => [...p.fastMoves, ...p.chargedMoves]
+    .some(a => a.name === attackNameToLower)).length + " Pokemons ayant l'attaque " + attackNameToLower + " :");
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
         if (pokemon.fastMoves || pokemon.chargedMoves){
             for (const attack of [...pokemon.fastMoves, ...pokemon.chargedMoves]) {
-                if (attack.name === attackName) {
+                if (attack.name === attackNameToLower) {
                     console.log("- " + pokemon.toString());
                 }        
             }
@@ -24,16 +28,18 @@ function getPokemonsByAttack(attackName){
     });
 }
 
-function getAttackByType(typeName){
-    console.log("Liste des " + Object.values(Attack.all_attacks).filter(a => a.type === typeName).length + " attaques de type " + typeName + " :");
+function getAttacksByType(typeName){
+    const typeNameToLower = typeName.toLowerCase();
+    console.log("Liste des " + Object.values(Attack.all_attacks)
+    .filter(a => a.type === typeNameToLower).length + " attaques de type " + typeNameToLower + " :");
     Object.values(Attack.all_attacks).forEach(attack => {
-        if(attack.type == typeName){
+        if(attack.type == typeNameToLower){
             console.log("- " + attack.toString());
         }
     });
 }
 
-function sortPokemonByTypeThenName() {
+function sortPokemonsByTypeThenName() {
     const sorted = Object.values(Pokemon.all_pokemons).sort((a, b) => {
         const typeA1 = a.types[0].name ?? '';
         const typeA2 = a.types[1]?.name ?? '';
@@ -140,5 +146,3 @@ function fastFight(pokemonNameA, pokemonNameB){
     
     console.table(fight);
 }
-
-fastFight('Charmander', 'Bulbasaur');

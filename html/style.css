@@ -38,6 +38,20 @@ th:not(dialog th) {
     letter-spacing: 0.05em;
     border-bottom: 1px solid rgba(0,0,0,0.07);
     white-space: nowrap;
+    
+}
+
+th.sorted-column {
+    font-weight: 700;
+    color: #000000;
+}
+
+table th {
+    cursor: pointer;
+}
+
+table th:last-of-type, table th:nth-child(3) {
+    cursor: default;
 }
 th:first-child {
     border-top-left-radius: 16px;
@@ -220,8 +234,13 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    background-color: #05ad74;
-    border: solid 2px #048f61 ;
+    background-color: #054d35;
+    border: solid 2px #05573b ;
+}
+
+button:hover {
+    background-color: #05573b;
+    border-color: #054d35;
 }
 
 #page-info {

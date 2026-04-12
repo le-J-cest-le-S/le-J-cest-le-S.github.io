@@ -16,6 +16,96 @@ let searchQuery = '';
 let selectedType = '';
 let selectedFastAttack = '';
 
+// Mémorise la colonne triée et le sens du tri en cours.
+let sortState = {
+    column: null,
+    direction: 'asc'
+};
+
+// Associe chaque entête triable à la valeur utilisée pour le tri.
+const sortableColumns = {
+    0: pokemon => Number(pokemon.id),
+    1: pokemon => pokemon.name,
+    3: pokemon => pokemon.types.map(type => type.name).join(' / '),
+    4: pokemon => Number(pokemon.stamina),
+    5: pokemon => Number(pokemon.baseAttack),
+    6: pokemon => Number(pokemon.baseDefense)
+};
+
+// Compare deux valeurs numériques ou textuelles.
+function compareValues(firstValue, secondValue) {
+    // Si les deux valeurs sont des nombres, les comparer numériquement. 
+    if (typeof firstValue === 'number' && typeof secondValue === 'number') {
+        return firstValue - secondValue;
+    }
+
+    // Convertir en minuscules pour ignorer les majuscules
+    const a = firstValue.toLowerCase();
+    const b = secondValue.toLowerCase();
+
+    if (a < b) return -1;
+    if (a > b) return 1;
+}
+
+// Trie la liste en fonction de la colonne active, puis départage par le nom.
+function sortPokemons(pokemons) {
+    // Si aucune colonne n'est active, retourner la liste dans l'ordre d'origine (tri par id).
+    if (sortState.column === null) {
+        return [...pokemons];
+    }
+
+    // Récupérer la fonction de tri correspondant à la colonne active, ou utiliser le tri par id par défaut.
+    const valueGetter = sortableColumns[sortState.column] ?? sortableColumns[1];
+
+    // Trier les pokémons en utilisant la fonction de comparaison.
+    return [...pokemons].sort((firstPokemon, secondPokemon) => {
+        // Comparer d'abord par la colonne active, puis par le nom pour départager les égalités.
+        const primaryComparison = compareValues(valueGetter(firstPokemon), valueGetter(secondPokemon));
+        const comparison = primaryComparison !== 0
+            ? primaryComparison
+            : compareValues(firstPokemon.name, secondPokemon.name);
+
+        // Inverser le résultat si le tri est décroissant.
+        return sortState.direction === 'asc' ? comparison : -comparison;
+    });
+}
+
+// Met en gras l'entête correspondant au tri actif.
+function updateSortedHeader() {
+    const headers = $('thead th');
+    // Retirer la classe de tous les entêtes, puis l'ajouter à l'entête actif s'il y en a un.
+    headers.removeClass('sorted-column');
+
+    if (sortState.column !== null) {
+        // Ajouter la classe à l'entête actif.
+        headers.eq(sortState.column).addClass('sorted-column');
+    }
+}
+
+// Trie la liste au clic sur une colonne, sauf la colonne image et génération.
+$('thead th').on('click', source => {
+    const column = source.currentTarget.cellIndex;
+    // Ne pas trier si la colonne n'est pas triable (ex: image et génération).
+    if (column === 7 || column === 2) {
+        return;
+    }
+    // Premier clic : ordre croissant. Clic suivant : ordre décroissant.
+    if (sortState.column === column) {
+        sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
+    }
+    else {
+        sortState.column = column;
+        sortState.direction = 'asc';
+    }
+
+    currentPage = 0;
+    localStorage.setItem('currentPage', 0);
+    currentPokemons = sortPokemons(currentPokemons);
+    updateSortedHeader();
+    showPage(currentPage, currentPokemons);
+    updatePageInfo(currentPokemons);        
+});            
+
 const typeFilter = $('#type-filter');
 // Récupérer tous les types uniques
 const allTypes = Object.values(Type.all_types).map(type => type.name).sort();
@@ -125,6 +215,16 @@ const pageInfo = $('#page-info');
 
 function updatePageInfo(pokemons = currentPokemons) {
     const totalPages = Math.ceil(pokemons.length / itemsPerPage);
+    // Si la liste est vide, afficher "Page 0 sur 0" et désactiver les boutons.
+    if (totalPages === 0) {
+        pageInfo.text('Page 0 sur 0');
+        btnPrec.css('disabled', true);
+        btnPrec.css('pointer-events', 'none');
+        btnSuiv.css('disabled', true);
+        btnSuiv.css('pointer-events', 'none');
+        return;
+    }
+
     pageInfo.text(`Page ${currentPage + 1} sur ${totalPages}`);
     
     btnPrec.css('disabled', false);
@@ -163,6 +263,8 @@ function applyFilters() {
             : true;
         return matchesSearch && matchesType && matchesFastAttack;
     });
+
+    currentPokemons = sortPokemons(currentPokemons);
 
     showPage(currentPage, currentPokemons);
     updatePageInfo(currentPokemons);
