@@ -140,5 +140,3 @@ function fastFight(pokemonNameA, pokemonNameB){
     
     console.table(fight);
 }
-
-fastFight('Charmander', 'Bulbasaur');

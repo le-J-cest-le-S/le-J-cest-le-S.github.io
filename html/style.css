@@ -41,6 +41,20 @@ th {
     letter-spacing: 0.05em;
     border-bottom: 1px solid rgba(0,0,0,0.07);
     white-space: nowrap;
+    
+}
+
+th.sorted-column {
+    font-weight: 700;
+    color: #000000;
+}
+
+table th {
+    cursor: pointer;
+}
+
+table th:last-of-type, table th:nth-child(3) {
+    cursor: default;
 }
 
 td {
