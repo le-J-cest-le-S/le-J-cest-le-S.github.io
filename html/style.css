@@ -20,7 +20,7 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #05ad74;
+    background-color: #054d35;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
@@ -70,7 +70,7 @@ tr:last-child td {
 }
 
 tbody tr:hover {
-    background-color: #0fca8c;
+    background-color: #05573b;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
@@ -229,8 +229,13 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    background-color: #05ad74;
-    border: solid 2px #048f61 ;
+    background-color: #054d35;
+    border: solid 2px #05573b ;
+}
+
+button:hover {
+    background-color: #05573b;
+    border-color: #054d35;
 }
 
 #page-info {

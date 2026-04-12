@@ -1,5 +1,6 @@
 function getPokemonsByType(typeName){
-    console.log("Liste des " + Object.values(Pokemon.all_pokemons).filter(p => p.types.some(t => t.name === typeName)).length + " Pokemons de type " + typeName + " :");
+    console.log("Liste des " + Object.values(Pokemon.all_pokemons)
+    .filter(p => p.types.some(t => t.name === typeName)).length + " Pokemons de type " + typeName + " :");
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
         if(pokemon.types){
             for (const type of pokemon.types) {
@@ -12,7 +13,10 @@ function getPokemonsByType(typeName){
 }
 
 function getPokemonsByAttack(attackName){
-    console.log("Liste des " + Object.values(Pokemon.all_pokemons).filter(p => [...p.fastMoves, ...p.chargedMoves].some(a => a.name === attackName)).length + " Pokemons ayant l'attaque " + attackName + " :");
+    const attackName = attackName.toLowerCase();
+    console.log("Liste des " + Object.values(Pokemon.all_pokemons)
+    .filter(p => [...p.fastMoves, ...p.chargedMoves]
+    .some(a => a.name === attackName)).length + " Pokemons ayant l'attaque " + attackName + " :");
     Object.values(Pokemon.all_pokemons).forEach(pokemon => {
         if (pokemon.fastMoves || pokemon.chargedMoves){
             for (const attack of [...pokemon.fastMoves, ...pokemon.chargedMoves]) {
@@ -24,8 +28,10 @@ function getPokemonsByAttack(attackName){
     });
 }
 
-function getAttackByType(typeName){
-    console.log("Liste des " + Object.values(Attack.all_attacks).filter(a => a.type === typeName).length + " attaques de type " + typeName + " :");
+function getAttacksByType(typeName){
+    const typeName = typeName.toLowerCase();
+    console.log("Liste des " + Object.values(Attack.all_attacks)
+    .filter(a => a.type === typeName).length + " attaques de type " + typeName + " :");
     Object.values(Attack.all_attacks).forEach(attack => {
         if(attack.type == typeName){
             console.log("- " + attack.toString());
@@ -33,7 +39,7 @@ function getAttackByType(typeName){
     });
 }
 
-function sortPokemonByTypeThenName() {
+function sortPokemonsByTypeThenName() {
     const sorted = Object.values(Pokemon.all_pokemons).sort((a, b) => {
         const typeA1 = a.types[0].name ?? '';
         const typeA2 = a.types[1]?.name ?? '';
