@@ -28,6 +28,10 @@ table:not(dialog table) {
     overflow-x: auto;
 }
 
+img {
+    object-fit: contain;
+}
+
 thead {
     background-color: white;
 }

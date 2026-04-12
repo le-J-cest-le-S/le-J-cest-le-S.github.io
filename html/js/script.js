@@ -176,12 +176,11 @@ tBody.on('mouseenter', 'img.sprite', function() {
     }).css({
         position: 'absolute',
         pointerEvents: 'none',
-        top: `${rect.top + window.scrollY - 0}px`,
-        left: `${rect.left + window.scrollX}px`,
+        top: `${rect.top}px`,
+        left: `${rect.left}px`,
         width: '3em',
-        height: '2em'
-    }).on('load', function() {
-        $(this).css('top', `${rect.top + window.scrollY}`);
+        height: '2em',
+        transform: 'translateX(-25%)'
     }).appendTo('body');
 
     $(this).css('opacity', '0');
